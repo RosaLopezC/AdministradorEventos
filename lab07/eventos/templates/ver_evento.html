@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ evento.nombre }}</h2>
+<p>{{ evento.descripcion }}</p>
+<p>Fecha Inicio: {{ evento.fecha_inicio }}</p>
+<p>Fecha Fin: {{ evento.fecha_fin }}</p>
+<p>Organizador: {{ evento.organizador }}</p>
+
+<h3>Usuarios Registrados</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for registro in registros %}
+        <tr>
+            <td>{{ registro.usuario.username }}</td>
+            <td>{{ registro.usuario.email }}</td>
+            <td>
+                <form method="post" action="{% url 'ver_evento' evento.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="registro_id" value="{{ registro.id }}">
+                    <button type="submit" name="accion" value="eliminar" class="btn btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'registrar_usuario_evento' evento.id %}" class="btn btn-success">Registrar Usuario</a>
+{% endblock %}

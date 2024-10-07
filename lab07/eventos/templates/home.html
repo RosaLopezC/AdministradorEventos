@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Bienvenid@, {{ user.first_name }}</h2>
+<br><br>
+<div class="row">
+    <div class="col-md-6">
+        <a href="{% url 'listar_eventos' %}" class="btn btn-primary btn-block">Listar Eventos</a>
+    </div>
+    <div class="col-md-6">
+        <a href="{% url 'listar_usuarios' %}" class="btn btn-primary btn-block">Listar Usuarios</a>
+    </div>
+</div>
+{% endblock %}

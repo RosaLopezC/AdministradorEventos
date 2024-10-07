@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Eventos</h2>
+<div class="mb-3">
+    <a href="{% url 'filtrar_eventos' %}?filtro=hoy" class="btn btn-info">Eventos de Hoy</a>
+    <a href="{% url 'filtrar_eventos' %}?filtro=proximos" class="btn btn-info">Próximos Eventos</a>
+    <a href="{% url 'filtrar_eventos' %}?filtro=pasados" class="btn btn-info">Eventos Pasados</a>
+</div>
+<div class="mb-3">
+    <form method="get" action="{% url 'filtrar_eventos' %}">
+        <label for="mes">Filtrar por mes:</label>
+        <select name="mes" id="mes">
+            <option value="">Todos los meses</option>
+            {% for month in meses_disponibles %}
+            <option value="{{ month.month }}">{{ month|date:"F" }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-info">Filtrar</button>
+    </form>
+</div>
+<div class="mb-3">
+    <form method="get" action="{% url 'filtrar_eventos' %}">
+        <label for="organizador">Filtrar por organizador:</label>
+        <select name="organizador" id="organizador">
+            <option value="">Todos los organizadores</option>
+            {% for organizador in organizadores %}
+            <option value="{{ organizador.id }}">{{ organizador.username }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-info">Filtrar</button>
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Organizador</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for evento in eventos %}
+        <tr>
+            <td>{{ evento.nombre }}</td>
+            <td>{{ evento.fecha_inicio }}</td>
+            <td>{{ evento.fecha_fin }}</td>
+            <td>{{ evento.organizador }}</td>
+            <td>
+                <a href="{% url 'ver_evento' evento.id %}" class="btn btn-info">Ver</a>
+                <a href="{% url 'editar_evento' evento.id %}" class="btn btn-warning">Editar</a>
+                <a href="{% url 'eliminar_evento' evento.id %}" class="btn btn-danger">Eliminar</a>
+                <a href="{% url 'registrar_usuario_evento' evento.id %}" class="btn btn-success">Registrar Usuario</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p>Total de eventos: {{ total_eventos }}</p>
+<a href="{% url 'crear_evento' %}" class="btn btn-success">Crear Evento</a>
+{% endblock %}

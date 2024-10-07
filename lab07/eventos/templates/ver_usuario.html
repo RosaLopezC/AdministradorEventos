@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ usuario.username }}</h2>
+<p>Email: {{ usuario.email }}</p>
+<p>Nombre: {{ usuario.first_name }}</p>
+<p>Apellido: {{ usuario.last_name }}</p>
+
+<h3>Eventos Registrados</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for registro in registros %}
+        <tr>
+            <td>{{ registro.evento.nombre }}</td>
+            <td>{{ registro.evento.fecha_inicio }}</td>
+            <td>{{ registro.evento.fecha_fin }}</td>
+            <td>
+                <form method="post" action="{% url 'ver_usuario' usuario.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="registro_id" value="{{ registro.id }}">
+                    <button type="submit" name="accion" value="eliminar" class="btn btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
